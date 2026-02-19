@@ -41,9 +41,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Fooditems(modifier: Modifier = Modifier){
-    var item1 by remember{ mutableStateOf("") }
-    var item2 by remember{ mutableStateOf("") }
+fun Fooditems(modifier: Modifier = Modifier) {
+    var item1 by remember { mutableStateOf("") }
+    var item2 by remember { mutableStateOf("") }
     var item3 by remember { mutableStateOf("") }
 
     var subtotal by remember { mutableStateOf(0.0) }
@@ -51,68 +51,71 @@ fun Fooditems(modifier: Modifier = Modifier){
     var total by remember { mutableStateOf(0.0) }
 
     Column(
-        modifier= modifier
+        modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp)
-
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        Text( " Item #1: ")
+        Text(" Item #1: ")
         TextField(
             value = item1,
-            onValueChange = {item1 = it},
+            onValueChange = { item1 = it },
             modifier = modifier
                 .fillMaxWidth()
-                .padding( bottom = 12.dp)
+                .padding(bottom = 12.dp)
 
 
         )
-        Text( " Item #2: ")
+        Text(" Item #2: ")
         TextField(
             value = item2,
-            onValueChange = {item2 = it},
+            onValueChange = { item2 = it },
             modifier = modifier
                 .fillMaxWidth()
-                .padding( bottom = 12.dp)
+                .padding(bottom = 12.dp)
 
         )
-        Text( " Item #3: ")
+        Text(" Item #3: ")
         TextField(
             value = item3,
-            onValueChange = {item3 = it},
+            onValueChange = { item3 = it },
             modifier = modifier
                 .fillMaxWidth()
-                .padding( bottom = 12.dp)
+                .padding(bottom = 12.dp)
         )
-    }
+
 
         Button(
-            onClick ={
+            onClick = {
                 val p1 = item1.toDoubleOrNull() ?: 0.0
                 val p2 = item2.toDoubleOrNull() ?: 0.0
                 val p3 = item3.toDoubleOrNull() ?: 0.0
 
-                subtotal= p1+p2+p3
-                tax = subtotal* 0.06
-                total = subtotal+ tax
-            }
+                subtotal = p1 + p2 + p3
+                tax = subtotal * 0.06
+                total = subtotal + tax
+            },
+            modifier = Modifier.padding(bottom = 24.dp)
         ) {
 
             Text("Compute")
         }
-        Column(horizontalAlignment = Alignment.Start) {
-            Row(){
+        Column(horizontalAlignment = Alignment.Start)
+        {
+            Row() {
                 Text("Subtotal: ")
                 Text("$${"%2f.format(subtotal)"}")
             }
-            Row(){
+            Row() {
                 Text("Tax: ")
                 Text("$${"%2f.format(tax)"}")
             }
-            Row(){
+            Row() {
                 Text("Total: ")
                 Text("$${"%2f.format(total)"}")
             }
 
         }
+    }
 }
