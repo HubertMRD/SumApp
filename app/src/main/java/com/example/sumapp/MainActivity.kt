@@ -51,40 +51,41 @@ fun Fooditems(modifier: Modifier = Modifier) {
     var total by remember { mutableStateOf(0.0) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-
     ) {
-        Text(" Item #1: ")
+
+        Text("Item #1:")
         TextField(
             value = item1,
             onValueChange = { item1 = it },
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 12.dp)
-
-
+                .padding(bottom = 12.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Text(" Item #2: ")
+
+        Text("Item #2:")
         TextField(
             value = item2,
             onValueChange = { item2 = it },
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 12.dp)
-
+                .padding(bottom = 12.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Text(" Item #3: ")
+
+        Text("Item #3:")
         TextField(
             value = item3,
             onValueChange = { item3 = it },
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 12.dp)
+                .padding(bottom = 12.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-
 
         Button(
             onClick = {
@@ -98,24 +99,22 @@ fun Fooditems(modifier: Modifier = Modifier) {
             },
             modifier = Modifier.padding(bottom = 24.dp)
         ) {
-
             Text("Compute")
         }
-        Column(horizontalAlignment = Alignment.Start)
-        {
-            Row() {
-                Text("Subtotal: ")
-                Text("$${"%2f.format(subtotal)"}")
-            }
-            Row() {
-                Text("Tax: ")
-                Text("$${"%2f.format(tax)"}")
-            }
-            Row() {
-                Text("Total: ")
-                Text("$${"%2f.format(total)"}")
-            }
 
+        Column(horizontalAlignment = Alignment.Start) {
+            Row {
+                Text("Subtotal: ")
+                Text(String.format("$%.2f", subtotal))
+            }
+            Row {
+                Text("Tax: ")
+                Text(String.format("$%.2f", tax))
+            }
+            Row {
+                Text("Total: ")
+                Text(String.format("$%.2f", total))
+            }
         }
     }
 }
