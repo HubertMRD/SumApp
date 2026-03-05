@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,17 +17,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sumapp.ui.theme.SumAppTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,24 +43,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Fooditems(modifier: Modifier = Modifier) {
+fun Fooditems(modifier: Modifier = Modifier, sumViewModel: SumViewModel = viewModel()) {
     if (LocalConfiguration.current.orientation== Configuration.ORIENTATION_PORTRAIT){
-        SumAppProtrait()
+        SumAppProtrait(modifier, sumViewModel)
     }else{
-        SumApplandscape()
+        SumApplandscape(modifier,sumViewModel)
     }
 }
 
 
 @Composable
-fun SumAppProtrait(modifier: Modifier = Modifier){
-    var item1 by remember { mutableStateOf("") }
-    var item2 by remember { mutableStateOf("") }
-    var item3 by remember { mutableStateOf("") }
-
-    var subtotal by remember { mutableStateOf(0.0) }
-    var tax by remember { mutableStateOf(0.0) }
-    var total by remember { mutableStateOf(0.0) }
+fun SumAppProtrait(modifier: Modifier = Modifier,sumViewModel: SumViewModel){
 
     Column(
         modifier = modifier
@@ -73,8 +64,8 @@ fun SumAppProtrait(modifier: Modifier = Modifier){
 
         Text("Item #1:")
         TextField(
-            value = item1,
-            onValueChange = { item1 = it },
+            value = sumViewModel.item1,
+            onValueChange = { sumViewModel.item1 = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 12.dp),
@@ -83,8 +74,8 @@ fun SumAppProtrait(modifier: Modifier = Modifier){
 
         Text("Item #2:")
         TextField(
-            value = item2,
-            onValueChange = { item2 = it },
+            value = sumViewModel.item2,
+            onValueChange = { sumViewModel.item2 = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 12.dp),
@@ -93,8 +84,8 @@ fun SumAppProtrait(modifier: Modifier = Modifier){
 
         Text("Item #3:")
         TextField(
-            value = item3,
-            onValueChange = { item3 = it },
+            value = sumViewModel.item3,
+            onValueChange = { sumViewModel.item3 = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 12.dp),
@@ -103,13 +94,13 @@ fun SumAppProtrait(modifier: Modifier = Modifier){
 
         Button(
             onClick = {
-                val p1 = item1.toDoubleOrNull() ?: 0.0
-                val p2 = item2.toDoubleOrNull() ?: 0.0
-                val p3 = item3.toDoubleOrNull() ?: 0.0
+                val p1 = sumViewModel.item1.toDoubleOrNull() ?: 0.0
+                val p2 = sumViewModel.item2.toDoubleOrNull() ?: 0.0
+                val p3 = sumViewModel.item3.toDoubleOrNull() ?: 0.0
 
-                subtotal = p1 + p2 + p3
-                tax = subtotal * 0.06
-                total = subtotal + tax
+                sumViewModel.subtotal = p1 + p2 + p3
+                sumViewModel.tax = sumViewModel.subtotal * 0.06
+                sumViewModel.total = sumViewModel.subtotal + sumViewModel.tax
             },
             modifier = Modifier.padding(bottom = 24.dp)
         ) {
@@ -119,15 +110,15 @@ fun SumAppProtrait(modifier: Modifier = Modifier){
         Column(horizontalAlignment = Alignment.Start) {
             Row {
                 Text("Subtotal: ")
-                Text(String.format("$%.2f", subtotal))
+                Text(String.format("$%.2f", sumViewModel.subtotal))
             }
             Row {
                 Text("Tax: ")
-                Text(String.format("$%.2f", tax))
+                Text(String.format("$%.2f", sumViewModel.tax))
             }
             Row {
                 Text("Total: ")
-                Text(String.format("$%.2f", total))
+                Text(String.format("$%.2f", sumViewModel.total))
             }
         }
     }
@@ -136,77 +127,78 @@ fun SumAppProtrait(modifier: Modifier = Modifier){
 
 
 @Composable
-fun SumApplandscape(modifier: Modifier = Modifier){
-    var item1 by remember { mutableStateOf("") }
-    var item2 by remember { mutableStateOf("") }
-    var item3 by remember { mutableStateOf("") }
+fun SumApplandscape(modifier: Modifier = Modifier, sumViewModel: SumViewModel){
 
-    var subtotal by remember { mutableStateOf(0.0) }
-    var tax by remember { mutableStateOf(0.0) }
-    var total by remember { mutableStateOf(0.0) }
 
-    Column(
-        modifier = modifier
-           // .fillMaxSize()
-            .padding(24.dp),
-    ) {
-
-        Text("Item #1:")
-        TextField(
-            value = item1,
-            onValueChange = { item1 = it },
-            modifier = Modifier
-                .padding(bottom = 12.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-
-        Text("Item #2:")
-        TextField(
-            value = item2,
-            onValueChange = { item2 = it },
-            modifier = Modifier
-                .padding(bottom = 12.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
-
-        Text("Item #3:")
-        TextField(
-            value = item3,
-            onValueChange = { item3 = it },
-            modifier = Modifier
-                .padding(bottom = 12.dp),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-
-        )
-
-        Button(
-            onClick = {
-                val p1 = item1.toDoubleOrNull() ?: 0.0
-                val p2 = item2.toDoubleOrNull() ?: 0.0
-                val p3 = item3.toDoubleOrNull() ?: 0.0
-
-                subtotal = p1 + p2 + p3
-                tax = subtotal * 0.06
-                total = subtotal + tax
-            },
-            modifier = Modifier.padding(bottom = 24.dp)
+        Column(
+            modifier = modifier
+                .padding(12.dp),
         ) {
-            Text("Compute")
+
+            Text("Item #1:")
+            TextField(
+                value = sumViewModel.item1,
+                onValueChange = { sumViewModel.item1 = it },
+                modifier = Modifier
+                    .padding(bottom = 12.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            Text("Item #2:")
+            TextField(
+                value = sumViewModel.item2,
+                onValueChange = { sumViewModel.item2 = it },
+                modifier = Modifier
+                    .padding(bottom = 12.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            Text("Item #3:")
+            TextField(
+                value = sumViewModel.item3,
+                onValueChange = { sumViewModel.item3 = it },
+                modifier = Modifier
+                    .padding(bottom = 12.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+
+            )
+
+            Button(
+                onClick = {
+                    val p1 = sumViewModel.item1.toDoubleOrNull() ?: 0.0
+                    val p2 = sumViewModel.item2.toDoubleOrNull() ?: 0.0
+                    val p3 = sumViewModel.item3.toDoubleOrNull() ?: 0.0
+
+                    sumViewModel.subtotal = p1 + p2 + p3
+                    sumViewModel.tax = sumViewModel.subtotal * 0.06
+                    sumViewModel.total = sumViewModel.subtotal + sumViewModel.tax
+                },
+                modifier = Modifier.padding(bottom = 24.dp)
+            ) {
+                Text("Compute")
+            }
         }
 
-        Column(        )
+    Row(
+
+    ) {
+        Column(
+            modifier = modifier
+                .padding(10.dp),
+
+            )
         {
             Row {
                 Text("Subtotal: ")
-                Text(String.format("$%.2f", subtotal))
+                Text(String.format("$%.2f", sumViewModel.subtotal))
             }
             Row {
                 Text("Tax: ")
-                Text(String.format("$%.2f", tax))
+                Text(String.format("$%.2f", sumViewModel.tax))
             }
             Row {
                 Text("Total: ")
-                Text(String.format("$%.2f", total))
+                Text(String.format("$%.2f", sumViewModel.total))
             }
         }
     }
