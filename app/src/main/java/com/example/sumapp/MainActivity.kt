@@ -125,81 +125,66 @@ fun SumAppProtrait(modifier: Modifier = Modifier,sumViewModel: SumViewModel){
 }
 
 
-
 @Composable
-fun SumApplandscape(modifier: Modifier = Modifier, sumViewModel: SumViewModel){
+fun SumAppLandscape(modifier: Modifier = Modifier, sumViewModel: SumViewModel) {
 
+    Row(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
 
+     
         Column(
-            modifier = modifier
-                .padding(12.dp),
+            modifier = Modifier
+                .weight(1f)
+                .padding(10.dp)
         ) {
 
             Text("Item #1:")
             TextField(
                 value = sumViewModel.item1,
-                onValueChange = { sumViewModel.item1 = it },
-                modifier = Modifier
-                    .padding(bottom = 12.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                onValueChange = { sumViewModel.item1 = it }
             )
 
             Text("Item #2:")
             TextField(
                 value = sumViewModel.item2,
-                onValueChange = { sumViewModel.item2 = it },
-                modifier = Modifier
-                    .padding(bottom = 12.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                onValueChange = { sumViewModel.item2 = it }
             )
 
             Text("Item #3:")
             TextField(
                 value = sumViewModel.item3,
-                onValueChange = { sumViewModel.item3 = it },
-                modifier = Modifier
-                    .padding(bottom = 12.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-
+                onValueChange = { sumViewModel.item3 = it }
             )
 
-            Button(
-                onClick = {
-                    val p1 = sumViewModel.item1.toDoubleOrNull() ?: 0.0
-                    val p2 = sumViewModel.item2.toDoubleOrNull() ?: 0.0
-                    val p3 = sumViewModel.item3.toDoubleOrNull() ?: 0.0
+            Spacer(modifier = Modifier.height(12.dp))
 
-                    sumViewModel.subtotal = p1 + p2 + p3
-                    sumViewModel.tax = sumViewModel.subtotal * 0.06
-                    sumViewModel.total = sumViewModel.subtotal + sumViewModel.tax
-                },
-                modifier = Modifier.padding(bottom = 24.dp)
-            ) {
+            Button(onClick = {
+                val p1 = sumViewModel.item1.toDoubleOrNull() ?: 0.0
+                val p2 = sumViewModel.item2.toDoubleOrNull() ?: 0.0
+                val p3 = sumViewModel.item3.toDoubleOrNull() ?: 0.0
+
+                sumViewModel.subtotal = p1 + p2 + p3
+                sumViewModel.tax = sumViewModel.subtotal * 0.06
+                sumViewModel.total = sumViewModel.subtotal + sumViewModel.tax
+            }) {
                 Text("Compute")
             }
         }
 
-    Row(
-
-    ) {
+      
         Column(
-            modifier = modifier
+            modifier = Modifier
+                .weight(1f)
                 .padding(10.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
 
-            )
-        {
-            Row {
-                Text("Subtotal: ")
-                Text(String.format("$%.2f", sumViewModel.subtotal))
-            }
-            Row {
-                Text("Tax: ")
-                Text(String.format("$%.2f", sumViewModel.tax))
-            }
-            Row {
-                Text("Total: ")
-                Text(String.format("$%.2f", sumViewModel.total))
-            }
+            Text("Subtotal: ${String.format("$%.2f", sumViewModel.subtotal)}")
+            Text("Tax: ${String.format("$%.2f", sumViewModel.tax)}")
+            Text("Total: ${String.format("$%.2f", sumViewModel.total)}")
         }
     }
 }
